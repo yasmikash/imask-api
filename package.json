@@ -1,0 +1,14 @@
+{
+  "name": "imaskapi",
+  "version": "1.0.0",
+  "description": "iMask",
+  "main": "server.js",
+  "author": "yasmikash",
+  "scripts": {
+    "start": "node /home/site/wwwroot/server.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.0"
+  }
+}

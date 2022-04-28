@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "/subscriptions/55ef65b0-0894-44a6-a2e0-7bcf0f0d5505/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/imaskapp-node",
+  "appService.deploySubpath": "."
+}
