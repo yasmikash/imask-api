@@ -1,14 +1,13 @@
 const axios = require("axios");
-
+const FormData = require("form-data");
 const Analyze = require("../schemas/analyze");
 
-module.exports.calculateData = async (data, user) => {
+module.exports.calculateData = async (data, coughFile, user) => {
+  const { isCough, coughRate } = await analyzeCough(coughFile);
   const bpm = await analyzeRespiratory(data.respiratory);
   const spo2 = await analyzeSPO2(data.spo2);
   const temperature = await analyzeTemperature(data.temperature);
   const heartRate = await analyzeHeartRate(data.heartRate);
-  const isCough = 1;
-  const coughRate = 4.001;
 
   // [sex, age, temp in celcius, heart rate, respiratory rate, spo2, iscough, coughrate]
   const finalStatusParams = [
@@ -51,6 +50,28 @@ async function analyzeRespiratory(data) {
     );
     return result.data.bpm;
   } catch (error) {
+    throw new Error("Model error occured");
+  }
+}
+
+async function analyzeCough(file) {
+  try {
+    const formData = new FormData();
+    formData.append("file", file, {
+      filename: "split0_1.wav",
+      contentType: "audio/wave",
+    });
+
+    const result = await axios.post(
+      "http://imask.southeastasia.cloudapp.azure.com:5002/cough",
+      formData,
+      {
+        headers: formData.getHeaders(),
+      }
+    );
+    return { isCough: result.data.isCough, coughRate: result.data.cough_rate };
+  } catch (error) {
+    console.log(error);
     throw new Error("Model error occured");
   }
 }
