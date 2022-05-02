@@ -55,9 +55,6 @@ async function analyzeRespiratory(data) {
 }
 
 async function analyzeCough(file) {
-  comsole.log("ge");
-  console.log(file);
-
   try {
     const formData = new FormData();
     formData.append("file", file, {

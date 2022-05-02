@@ -20,11 +20,6 @@ app.get("/test", (req, res) => {
   res.json({ message: "Test Endpoint" });
 });
 
-// app.post("/upload", (req, res) => {
-//   console.log(req.files);
-//   console.log(JSON.stringify(req.body.data));
-// });
-
 app.use((err, req, res, next) => {
   res.status(500).json({ error: err.message });
 });
