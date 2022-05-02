@@ -21,11 +21,12 @@ module.exports.createUser = async (data) => {
     phoneNo: data.phoneNo,
     NIC: data.NIC,
     password: hashedPassword,
+    gender: data.gender,
   });
 
-  const { firstName, lastName, email, location, age, phoneNo, NIC } =
+  const { firstName, lastName, email, location, age, phoneNo, NIC, gender } =
     await user.save();
-  return { firstName, lastName, email, location, age, phoneNo, NIC };
+  return { firstName, lastName, email, location, age, phoneNo, NIC, gender };
 };
 
 module.exports.signUser = async (data) => {

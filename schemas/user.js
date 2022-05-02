@@ -9,6 +9,7 @@ const userSchema = new Schema({
   age: Number,
   phoneNo: String,
   NIC: String,
+  gender: String,
 });
 
 module.exports = model("User", userSchema);

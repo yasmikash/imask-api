@@ -5,6 +5,7 @@ const cors = require("cors");
 
 const userRoute = require("./routes/user");
 const analyzeRoute = require("./routes/anaylize");
+const historyRoute = require("./routes/history");
 const { authenticateUser } = require("./middlewares/auth");
 const fileUpload = require("express-fileupload");
 
@@ -17,6 +18,8 @@ app.use(fileUpload({ limits: 1024 * 1024 * 50 }));
 app.use("/users", userRoute);
 
 app.use("/analyze", authenticateUser, analyzeRoute);
+
+app.use("/history", authenticateUser, historyRoute);
 
 app.get("/test", (req, res) => {
   res.json({ message: "Test Endpoint" });
