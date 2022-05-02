@@ -1,6 +1,7 @@
 const PORT = process.env.PORT || 5005;
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const userRoute = require("./routes/user");
 const analyzeRoute = require("./routes/anaylize");
@@ -9,6 +10,7 @@ const fileUpload = require("express-fileupload");
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(fileUpload({ limits: 1024 * 1024 * 50 }));
 
