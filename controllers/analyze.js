@@ -1,5 +1,6 @@
 const axios = require("axios");
 const FormData = require("form-data");
+const User = require("../schemas/user");
 const Analyze = require("../schemas/analyze");
 
 module.exports.calculateData = async (data, coughFile, user) => {
@@ -9,10 +10,17 @@ module.exports.calculateData = async (data, coughFile, user) => {
   const temperature = await analyzeTemperature(data.temperature);
   const heartRate = await analyzeHeartRate(data.heartRate);
 
+  const maskUser = await User.findById(user.id);
+
+  let userSex;
+  if (maskUser.gender === "male") userSex = 1;
+  if (maskUser.gender === "female") userSex = 0;
+  const userAge = maskUser.age;
+
   // [sex, age, temp in celcius, heart rate, respiratory rate, spo2, iscough, coughrate]
   const finalStatusParams = [
-    1,
-    64,
+    userSex,
+    userAge,
     temperature,
     heartRate,
     bpm,
