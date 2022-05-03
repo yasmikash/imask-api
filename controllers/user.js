@@ -49,6 +49,19 @@ module.exports.createUser = async (data) => {
   };
 };
 
+module.exports.updateUser = async (data, user) => {
+  const dataToUpdate = {
+    firstName: data.firstName,
+    lastName: data.lastName,
+    location: data.location,
+    phoneNo: data.phoneNo,
+    photo: data.photo,
+  };
+
+  await User.findByIdAndUpdate(user.id, dataToUpdate);
+  return dataToUpdate;
+};
+
 module.exports.signUser = async (data) => {
   const foundUser = await User.findOne({ NIC: data.NIC });
   if (!foundUser) {
