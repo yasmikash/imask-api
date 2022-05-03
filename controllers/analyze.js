@@ -89,10 +89,10 @@ async function analyzeHeartRate(data) {
     const result = await axios.post(
       "http://imask.southeastasia.cloudapp.azure.com:5003/heartrate",
       {
-        readings: data,
+        signal: data,
       }
     );
-    return result.data.beats;
+    return result.data.peaks_count;
   } catch (error) {
     throw new Error("Model error occured");
   }
