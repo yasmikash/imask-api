@@ -10,6 +10,7 @@ const userSchema = new Schema({
   phoneNo: String,
   NIC: String,
   gender: String,
+  photo: String,
 });
 
 module.exports = model("User", userSchema);
