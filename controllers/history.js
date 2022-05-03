@@ -1,5 +1,12 @@
 const Analyze = require("../schemas/analyze");
 
+module.exports.all = async (user) => {
+  const result = await Analyze.find({ user: user.id }).select(
+    "-_id -__v -user"
+  );
+  return result;
+};
+
 module.exports.respiratory = async (user) => {
   const result = await Analyze.find({ user: user.id }).select("date bpm -_id");
   return result;

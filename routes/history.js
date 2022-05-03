@@ -5,9 +5,19 @@ const {
   temperature,
   spo2,
   heartRate,
+  all,
 } = require("../controllers/history");
 
 const router = Router();
+
+router.post("/all", async (req, res, next) => {
+  try {
+    const result = await all(req.currentUser);
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.post("/respiratory", async (req, res, next) => {
   try {
