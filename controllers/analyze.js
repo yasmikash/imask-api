@@ -5,10 +5,10 @@ const Analyze = require("../schemas/analyze");
 
 module.exports.calculateData = async (data, coughFile, user) => {
   const { isCough, coughRate } = await analyzeCough(coughFile);
-  const bpm = await analyzeRespiratory(data.respiratory);
+  const bpm = ((await analyzeRespiratory(data.respiratory)) / 15) * 60;
   const spo2 = await analyzeSPO2(data.spo2);
   const temperature = await analyzeTemperature(data.temperature);
-  const heartRate = await analyzeHeartRate(data.heartRate);
+  const heartRate = ((await analyzeHeartRate(data.heartRate)) / 15) * 60;
 
   const maskUser = await User.findById(user.id);
 
