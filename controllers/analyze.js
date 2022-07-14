@@ -13,8 +13,8 @@ module.exports.calculateData = async (data, coughFile, user) => {
   const maskUser = await User.findById(user.id);
 
   let userSex;
-  if (maskUser.gender === "male") userSex = 1;
-  if (maskUser.gender === "female") userSex = 0;
+  if (maskUser.gender.toLowerCase() === "male") userSex = 1;
+  if (maskUser.gender.toLowerCase() === "female") userSex = 0;
   const userAge = maskUser.age;
 
   // [sex, age, temp in celcius, heart rate, respiratory rate, spo2, iscough, coughrate]
@@ -51,7 +51,7 @@ module.exports.calculateData = async (data, coughFile, user) => {
 async function analyzeRespiratory(data) {
   try {
     const result = await axios.post(
-      "http://imask.southeastasia.cloudapp.azure.com:5000/breathing",
+      "http://imask.southindia.cloudapp.azure.com:5000/breathing",
       {
         readings: data,
       }
@@ -71,7 +71,7 @@ async function analyzeCough(file) {
     });
 
     const result = await axios.post(
-      "http://imask.southeastasia.cloudapp.azure.com:5002/cough",
+      "http://imask.southindia.cloudapp.azure.com:5001/cough",
       formData,
       {
         headers: formData.getHeaders(),
@@ -86,7 +86,7 @@ async function analyzeCough(file) {
 async function analyzeHeartRate(data) {
   try {
     const result = await axios.post(
-      "http://imask.southeastasia.cloudapp.azure.com:5003/heartrate",
+      "http://imask.southindia.cloudapp.azure.com:5003/heartrate",
       {
         signal: data,
       }
@@ -100,7 +100,7 @@ async function analyzeHeartRate(data) {
 async function analyzeSPO2(data) {
   try {
     const result = await axios.post(
-      "http://ec2-3-110-217-150.ap-south-1.compute.amazonaws.com:5003/oxygenlevel",
+      "http://imask.southindia.cloudapp.azure.com:5004/oxygenlevel",
       {
         data: data,
       }
@@ -115,7 +115,7 @@ async function analyzeSPO2(data) {
 async function analyzeTemperature(data) {
   try {
     const result = await axios.post(
-      "http://ec2-3-110-217-150.ap-south-1.compute.amazonaws.com:5001/temperature",
+      "http://imask.southindia.cloudapp.azure.com:5005/temperature",
       {
         data: data,
       }
@@ -129,7 +129,7 @@ async function analyzeTemperature(data) {
 async function analyzeFinalStatus(data) {
   try {
     const result = await axios.post(
-      "http://ec2-3-110-217-150.ap-south-1.compute.amazonaws.com:5002/status",
+      "http://imask.southindia.cloudapp.azure.com:5002/status",
       {
         data: data,
       }
