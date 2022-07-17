@@ -59,7 +59,6 @@ module.exports.calculateData = async (
 };
 
 async function analyzeRespiratory(data) {
-  console.log("resp", data);
   try {
     const result = await axios.post(
       "http://imask.southindia.cloudapp.azure.com:5000/breathing",
@@ -95,8 +94,6 @@ async function analyzeCough(file) {
 }
 
 async function analyzeHeartRate(data) {
-  console.log("heartrate", data);
-
   try {
     const result = await axios.post(
       "http://imask.southindia.cloudapp.azure.com:5003/heartrate",
@@ -111,8 +108,6 @@ async function analyzeHeartRate(data) {
 }
 
 async function analyzeSPO2(data) {
-  console.log("spo2", data);
-
   try {
     const result = await axios.post(
       "http://imask.southindia.cloudapp.azure.com:5004/oxygenlevel",
@@ -128,8 +123,6 @@ async function analyzeSPO2(data) {
 }
 
 async function analyzeTemperature(data) {
-  console.log("temp", data);
-
   try {
     const result = await axios.post(
       "http://imask.southindia.cloudapp.azure.com:5005/temperature",
@@ -144,8 +137,6 @@ async function analyzeTemperature(data) {
 }
 
 async function analyzeFinalStatus(data) {
-  console.log("final", data);
-
   try {
     const result = await axios.post(
       "http://imask.southindia.cloudapp.azure.com:5002/status",
