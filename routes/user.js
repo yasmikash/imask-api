@@ -1,5 +1,10 @@
 const { Router } = require("express");
-const { createUser, signUser, updateUser } = require("../controllers/user");
+const {
+  createUser,
+  signUser,
+  updateUser,
+  getProfile,
+} = require("../controllers/user");
 const { authenticateUser } = require("../middlewares/auth");
 
 const router = Router();
@@ -8,6 +13,15 @@ router.post("/add", async (req, res, next) => {
   try {
     const createdUser = await createUser(req.body);
     res.json(createdUser);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/profile", authenticateUser, async (req, res, next) => {
+  try {
+    const user = await getProfile(req.currentUser);
+    res.json(user);
   } catch (error) {
     next(error);
   }

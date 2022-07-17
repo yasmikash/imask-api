@@ -2,6 +2,11 @@ const bcrypt = require("bcrypt");
 const User = require("../schemas/user");
 const { generateAccessToken } = require("./auth");
 
+module.exports.getProfile = async (user) => {
+  const fetchedUser = await User.findById(user.id, "-__v -password");
+  return fetchedUser;
+};
+
 module.exports.createUser = async (data) => {
   const hashedPassword = await new Promise((res, rej) => {
     bcrypt.hash(data.password, 10, (err, hash) => {
@@ -64,6 +69,19 @@ module.exports.updateUser = async (data, user) => {
 
 module.exports.signUser = async (data) => {
   const foundUser = await User.findOne({ NIC: data.NIC });
+
+  const profile = {
+    firstName: foundUser.firstName,
+    lastName: foundUser.lastName,
+    email: foundUser.email,
+    location: foundUser.location,
+    age: foundUser.age,
+    phoneNo: foundUser.phoneNo,
+    NIC: foundUser.NIC,
+    gender: foundUser.gender,
+    photo: foundUser.photo,
+  };
+
   if (!foundUser) {
     throw new Error("User could not be found");
   }
@@ -82,5 +100,5 @@ module.exports.signUser = async (data) => {
   };
 
   const token = generateAccessToken(tokenPayload);
-  return { token };
+  return { token, profile };
 };

@@ -3,12 +3,22 @@ const FormData = require("form-data");
 const User = require("../schemas/user");
 const Analyze = require("../schemas/analyze");
 
-module.exports.calculateData = async (data, coughFile, user) => {
-  const { isCough, coughRate } = await analyzeCough(coughFile);
-  const bpm = ((await analyzeRespiratory(data.respiratory)) / 15) * 60;
-  const spo2 = await analyzeSPO2(data.spo2);
-  const temperature = await analyzeTemperature(data.temperature);
-  const heartRate = ((await analyzeHeartRate(data.heartRate)) / 15) * 60;
+module.exports.calculateData = async (
+  coughData,
+  respiratoryRateData,
+  spo2Data,
+  heartRateData,
+  temperatureData,
+  user
+) => {
+  const { isCough, coughRate } = await analyzeCough(coughData);
+  const bpm =
+    ((await analyzeRespiratory(extractDataArray(respiratoryRateData))) / 15) *
+    60;
+  const spo2 = await analyzeSPO2(extractDataArray(spo2Data));
+  const temperature = await analyzeTemperature(extractDataArray(heartRateData));
+  const heartRate =
+    ((await analyzeHeartRate(extractDataArray(temperatureData))) / 15) * 60;
 
   const maskUser = await User.findById(user.id);
 
@@ -49,6 +59,7 @@ module.exports.calculateData = async (data, coughFile, user) => {
 };
 
 async function analyzeRespiratory(data) {
+  console.log("resp", data);
   try {
     const result = await axios.post(
       "http://imask.southindia.cloudapp.azure.com:5000/breathing",
@@ -84,6 +95,8 @@ async function analyzeCough(file) {
 }
 
 async function analyzeHeartRate(data) {
+  console.log("heartrate", data);
+
   try {
     const result = await axios.post(
       "http://imask.southindia.cloudapp.azure.com:5003/heartrate",
@@ -98,6 +111,8 @@ async function analyzeHeartRate(data) {
 }
 
 async function analyzeSPO2(data) {
+  console.log("spo2", data);
+
   try {
     const result = await axios.post(
       "http://imask.southindia.cloudapp.azure.com:5004/oxygenlevel",
@@ -113,6 +128,8 @@ async function analyzeSPO2(data) {
 }
 
 async function analyzeTemperature(data) {
+  console.log("temp", data);
+
   try {
     const result = await axios.post(
       "http://imask.southindia.cloudapp.azure.com:5005/temperature",
@@ -127,6 +144,8 @@ async function analyzeTemperature(data) {
 }
 
 async function analyzeFinalStatus(data) {
+  console.log("final", data);
+
   try {
     const result = await axios.post(
       "http://imask.southindia.cloudapp.azure.com:5002/status",
@@ -144,4 +163,15 @@ async function analyzeFinalStatus(data) {
       status: 0,
     };
   }
+}
+
+function extractDataArray(data) {
+  const stringArray = data.toString("utf8").split("\r\n");
+  const dataArray = [];
+
+  for (let value of stringArray) {
+    if (value) dataArray.push(Number(value));
+  }
+
+  return dataArray;
 }
