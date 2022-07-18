@@ -16,6 +16,14 @@ module.exports.fetchLocations = async (user) => {
   return fetchedLocations;
 };
 
+module.exports.fetchUserCoordinates = async (user) => {
+  const fetchedCoordinates = await Location.find(
+    { user: user.id },
+    "lat long -_id"
+  );
+  return fetchedCoordinates;
+};
+
 module.exports.createUser = async (data) => {
   const hashedPassword = await new Promise((res, rej) => {
     bcrypt.hash(data.password, 10, (err, hash) => {

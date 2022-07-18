@@ -5,6 +5,7 @@ const {
   updateUser,
   getProfile,
   fetchLocations,
+  fetchUserCoordinates,
 } = require("../controllers/user");
 const { authenticateUser } = require("../middlewares/auth");
 
@@ -23,6 +24,15 @@ router.get("/location", authenticateUser, async (req, res, next) => {
   try {
     const fetchedLocations = await fetchLocations(req.currentUser);
     res.json(fetchedLocations);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/coordinate", authenticateUser, async (req, res, next) => {
+  try {
+    const fetchedCoordinates = await fetchUserCoordinates(req.currentUser);
+    res.json(fetchedCoordinates);
   } catch (error) {
     next(error);
   }
