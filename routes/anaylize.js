@@ -7,7 +7,9 @@ const router = Router();
 
 router.post("/calculate", async (req, res, next) => {
   try {
+    const data = JSON.parse(JSON.parse(JSON.stringify(req.body.data)));
     const result = await calculateData(
+      data,
       req.files.cough.data,
       req.files.respiratoryRate.data,
       req.files.spo2.data,

@@ -2,8 +2,10 @@ const axios = require("axios");
 const FormData = require("form-data");
 const User = require("../schemas/user");
 const Analyze = require("../schemas/analyze");
+const Location = require("../schemas/location");
 
 module.exports.calculateData = async (
+  locationData,
   coughData,
   respiratoryRateData,
   spo2Data,
@@ -16,9 +18,11 @@ module.exports.calculateData = async (
     ((await analyzeRespiratory(extractDataArray(respiratoryRateData))) / 15) *
     60;
   const spo2 = await analyzeSPO2(extractDataArray(spo2Data));
-  const temperature = await analyzeTemperature(extractDataArray(heartRateData));
+  const temperature = await analyzeTemperature(
+    extractDataArray(temperatureData)
+  );
   const heartRate =
-    ((await analyzeHeartRate(extractDataArray(temperatureData))) / 15) * 60;
+    ((await analyzeHeartRate(extractDataArray(heartRateData))) / 15) * 60;
 
   const maskUser = await User.findById(user.id);
 
@@ -53,8 +57,14 @@ module.exports.calculateData = async (
   };
 
   const analyze = new Analyze({ ...result, user: user.id, date: new Date() });
+  const location = new Location({
+    ...locationData,
+    user: user.id,
+    date: new Date(),
+    analyze: analyze._id,
+  });
   await analyze.save();
-
+  await location.save();
   return result;
 };
 

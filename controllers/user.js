@@ -1,10 +1,19 @@
 const bcrypt = require("bcrypt");
 const User = require("../schemas/user");
+const Location = require("../schemas/location");
 const { generateAccessToken } = require("./auth");
 
 module.exports.getProfile = async (user) => {
   const fetchedUser = await User.findById(user.id, "-__v -password");
   return fetchedUser;
+};
+
+module.exports.fetchLocations = async (user) => {
+  const fetchedLocations = await Location.find({ user: user.id }).populate(
+    "analyze",
+    "-__v -user -date"
+  );
+  return fetchedLocations;
 };
 
 module.exports.createUser = async (data) => {

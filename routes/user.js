@@ -4,6 +4,7 @@ const {
   signUser,
   updateUser,
   getProfile,
+  fetchLocations,
 } = require("../controllers/user");
 const { authenticateUser } = require("../middlewares/auth");
 
@@ -13,6 +14,15 @@ router.post("/add", async (req, res, next) => {
   try {
     const createdUser = await createUser(req.body);
     res.json(createdUser);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/location", authenticateUser, async (req, res, next) => {
+  try {
+    const fetchedLocations = await fetchLocations(req.currentUser);
+    res.json(fetchedLocations);
   } catch (error) {
     next(error);
   }
