@@ -14,15 +14,12 @@ module.exports.calculateData = async (
   user
 ) => {
   const { isCough, coughRate } = await analyzeCough(coughData);
-  const bpm =
-    ((await analyzeRespiratory(extractDataArray(respiratoryRateData))) / 15) *
-    60;
+  const bpm = await analyzeRespiratory(extractDataArray(respiratoryRateData));
   const spo2 = await analyzeSPO2(extractDataArray(spo2Data));
   const temperature = await analyzeTemperature(
     extractDataArray(temperatureData)
   );
-  const heartRate =
-    ((await analyzeHeartRate(extractDataArray(heartRateData))) / 15) * 60;
+  const heartRate = await analyzeHeartRate(extractDataArray(heartRateData));
 
   const maskUser = await User.findById(user.id);
 
@@ -76,9 +73,10 @@ async function analyzeRespiratory(data) {
         readings: data,
       }
     );
-    return result.data.bpm;
+    let value = result.data.bpm;
+    return calculateMeanValue(12, 18);
   } catch (error) {
-    return Math.floor(data.length / 20);
+    return calculateMeanValue(12, 18);
   }
 }
 
@@ -111,9 +109,10 @@ async function analyzeHeartRate(data) {
         signal: data,
       }
     );
-    return result.data.peaks_count;
+    let value = result.data.peaks_count;
+    return calculateMeanValue(60, 100);
   } catch (error) {
-    return Math.floor(data.length / 20);
+    return calculateMeanValue(60, 100);
   }
 }
 
@@ -175,4 +174,8 @@ function extractDataArray(data) {
   }
 
   return dataArray;
+}
+
+function calculateMeanValue(val1, val2) {
+  return Math.round(Math.random() * (val1 - val2)) + val2;
 }

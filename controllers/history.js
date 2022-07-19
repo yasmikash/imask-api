@@ -3,9 +3,9 @@ const Analyze = require("../schemas/analyze");
 const mongoose = require("mongoose");
 
 module.exports.fetchAll = async (user) => {
-  const result = await Analyze.find({ user: user.id }).select(
-    "-_id -__v -user"
-  );
+  const result = await Analyze.find({ user: user.id })
+    .select("-_id -__v -user")
+    .sort({ date: "desc" });
   return result;
 };
 
