@@ -68,7 +68,7 @@ module.exports.calculateData = async (
 async function analyzeRespiratory(data) {
   try {
     const result = await axios.post(
-      "http://imask.southindia.cloudapp.azure.com:5000/breathing",
+      "http://imask.westus3.cloudapp.azure.com:5000/breathing",
       {
         readings: data,
       }
@@ -89,7 +89,7 @@ async function analyzeCough(file) {
     });
 
     const result = await axios.post(
-      "http://imask.southindia.cloudapp.azure.com:5001/cough",
+      "http://imask.westus3.cloudapp.azure.com:5002/cough",
       formData,
       {
         headers: formData.getHeaders(),
@@ -104,7 +104,7 @@ async function analyzeCough(file) {
 async function analyzeHeartRate(data) {
   try {
     const result = await axios.post(
-      "http://imask.southindia.cloudapp.azure.com:5003/heartrate",
+      "http://imask.westus3.cloudapp.azure.com:5001/heartrate",
       {
         signal: data,
       }
@@ -119,7 +119,7 @@ async function analyzeHeartRate(data) {
 async function analyzeSPO2(data) {
   try {
     const result = await axios.post(
-      "http://imask.southindia.cloudapp.azure.com:5004/oxygenlevel",
+      "http://imask.westus3.cloudapp.azure.com:5003/oxygenlevel",
       {
         data: data,
       }
@@ -135,7 +135,7 @@ async function analyzeSPO2(data) {
 async function analyzeTemperature(data) {
   try {
     const result = await axios.post(
-      "http://imask.southindia.cloudapp.azure.com:5005/temperature",
+      "http://imask.westus3.cloudapp.azure.com:5005/temperature",
       {
         data: data,
       }
@@ -150,7 +150,7 @@ async function analyzeTemperature(data) {
 async function analyzeFinalStatus(data) {
   try {
     const result = await axios.post(
-      "http://imask.southindia.cloudapp.azure.com:5002/status",
+      "http://imask.westus3.cloudapp.azure.com:5004/status",
       {
         data: data,
       }
