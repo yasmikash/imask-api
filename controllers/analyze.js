@@ -4,6 +4,8 @@ const User = require("../schemas/user");
 const Analyze = require("../schemas/analyze");
 const Location = require("../schemas/location");
 
+const baseUrl = process.env.BASE_URL;
+
 module.exports.calculateData = async (
   locationData,
   coughData,
@@ -67,12 +69,9 @@ module.exports.calculateData = async (
 
 async function analyzeRespiratory(data) {
   try {
-    const result = await axios.post(
-      "http://imask.westus3.cloudapp.azure.com:5000/breathing",
-      {
-        readings: data,
-      }
-    );
+    const result = await axios.post(`${baseUrl}/breathing`, {
+      readings: data,
+    });
     let value = result.data.bpm;
     return calculateMeanValue(12, 18);
   } catch (error) {
@@ -88,13 +87,9 @@ async function analyzeCough(file) {
       contentType: "audio/wave",
     });
 
-    const result = await axios.post(
-      "http://imask.westus3.cloudapp.azure.com:5002/cough",
-      formData,
-      {
-        headers: formData.getHeaders(),
-      }
-    );
+    const result = await axios.post(`${baseUrl}/cough`, formData, {
+      headers: formData.getHeaders(),
+    });
     return { isCough: result.data.isCough, coughRate: result.data.cough_rate };
   } catch (error) {
     return { isCough: 1, coughRate: 3.4 };
@@ -103,12 +98,9 @@ async function analyzeCough(file) {
 
 async function analyzeHeartRate(data) {
   try {
-    const result = await axios.post(
-      "http://imask.westus3.cloudapp.azure.com:5001/heartrate",
-      {
-        signal: data,
-      }
-    );
+    const result = await axios.post(`${baseUrl}/heartrate`, {
+      signal: data,
+    });
     let value = result.data.peaks_count;
     return calculateMeanValue(60, 100);
   } catch (error) {
@@ -118,12 +110,9 @@ async function analyzeHeartRate(data) {
 
 async function analyzeSPO2(data) {
   try {
-    const result = await axios.post(
-      "http://imask.westus3.cloudapp.azure.com:5003/oxygenlevel",
-      {
-        data: data,
-      }
-    );
+    const result = await axios.post(`${baseUrl}/oxygenlevel`, {
+      data: data,
+    });
 
     // return result.data;
     return calculateMeanValue(96, 99);
@@ -134,12 +123,9 @@ async function analyzeSPO2(data) {
 
 async function analyzeTemperature(data) {
   try {
-    const result = await axios.post(
-      "http://imask.westus3.cloudapp.azure.com:5005/temperature",
-      {
-        data: data,
-      }
-    );
+    const result = await axios.post(`${baseUrl}/temperature`, {
+      data: data,
+    });
     // return parseFloat(result.data.temperature);
     return calculateMeanValue(36.1, 37.2);
   } catch (error) {
@@ -149,12 +135,9 @@ async function analyzeTemperature(data) {
 
 async function analyzeFinalStatus(data) {
   try {
-    const result = await axios.post(
-      "http://imask.westus3.cloudapp.azure.com:5004/status",
-      {
-        data: data,
-      }
-    );
+    const result = await axios.post(`${baseUrl}/status`, {
+      data: data,
+    });
     return {
       probability: parseFloat(result.data.probability),
       status: parseFloat(result.data.status),

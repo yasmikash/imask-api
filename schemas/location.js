@@ -11,7 +11,10 @@ const locationSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Analyze",
   },
-  date: Date,
+  createdDate: {
+    type: Date,
+    default: new Date(),
+  },
 });
 
 module.exports = model("Location", locationSchema);

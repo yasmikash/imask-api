@@ -114,6 +114,7 @@ module.exports.signUser = async (data) => {
     id: foundUser._id,
     email: foundUser.user,
     NIC: foundUser.NIC,
+    userType: "user",
   };
 
   const token = generateAccessToken(tokenPayload);

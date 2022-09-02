@@ -20,7 +20,7 @@ router.post("/add", async (req, res, next) => {
   }
 });
 
-router.get("/location", authenticateUser, async (req, res, next) => {
+router.get("/location", authenticateUser("user"), async (req, res, next) => {
   try {
     const fetchedLocations = await fetchLocations(req.currentUser);
     res.json(fetchedLocations);
@@ -29,7 +29,7 @@ router.get("/location", authenticateUser, async (req, res, next) => {
   }
 });
 
-router.get("/coordinate", authenticateUser, async (req, res, next) => {
+router.get("/coordinate", authenticateUser("user"), async (req, res, next) => {
   try {
     const fetchedCoordinates = await fetchUserCoordinates(req.currentUser);
     res.json(fetchedCoordinates);
@@ -38,7 +38,7 @@ router.get("/coordinate", authenticateUser, async (req, res, next) => {
   }
 });
 
-router.get("/profile", authenticateUser, async (req, res, next) => {
+router.get("/profile", authenticateUser("user"), async (req, res, next) => {
   try {
     const user = await getProfile(req.currentUser);
     res.json(user);
@@ -47,7 +47,7 @@ router.get("/profile", authenticateUser, async (req, res, next) => {
   }
 });
 
-router.put("/update", authenticateUser, async (req, res, next) => {
+router.put("/update", authenticateUser("user"), async (req, res, next) => {
   try {
     const updatedUser = await updateUser(req.body, req.currentUser);
     res.json(updatedUser);

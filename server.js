@@ -1,9 +1,12 @@
+require("dotenv").config();
+
 const PORT = process.env.PORT || 8080;
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
 const userRoute = require("./routes/user");
+const adminRoute = require("./routes/admin");
 const analyzeRoute = require("./routes/anaylize");
 const historyRoute = require("./routes/history");
 const { authenticateUser } = require("./middlewares/auth");
@@ -17,9 +20,11 @@ app.use(fileUpload({ limits: 1024 * 1024 * 50 }));
 
 app.use("/users", userRoute);
 
-app.use("/analyze", authenticateUser, analyzeRoute);
+app.use("/admins", adminRoute);
 
-app.use("/history", authenticateUser, historyRoute);
+app.use("/analyze", authenticateUser("user"), analyzeRoute);
+
+app.use("/history", authenticateUser("user"), historyRoute);
 
 app.get("/test", (req, res) => {
   res.json({ message: "Test Endpoint" });

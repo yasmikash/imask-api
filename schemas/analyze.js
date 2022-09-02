@@ -13,7 +13,10 @@ const analyzeSchema = new Schema({
   temperature: Number,
   covidStatus: Number,
   covidStatusProbability: Number,
-  date: Date,
+  createdDate: {
+    type: Date,
+    default: new Date(),
+  },
 });
 
 module.exports = model("Analyze", analyzeSchema);
