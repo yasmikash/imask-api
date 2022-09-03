@@ -69,7 +69,7 @@ module.exports.calculateData = async (
 
 async function analyzeRespiratory(data) {
   try {
-    const result = await axios.post(`${baseUrl}/breathing`, {
+    const result = await axios.post(`${baseUrl}:5000/breathing`, {
       readings: data,
     });
     let value = result.data.bpm;
@@ -87,7 +87,7 @@ async function analyzeCough(file) {
       contentType: "audio/wave",
     });
 
-    const result = await axios.post(`${baseUrl}/cough`, formData, {
+    const result = await axios.post(`${baseUrl}/cough:5002`, formData, {
       headers: formData.getHeaders(),
     });
     return { isCough: result.data.isCough, coughRate: result.data.cough_rate };
@@ -98,7 +98,7 @@ async function analyzeCough(file) {
 
 async function analyzeHeartRate(data) {
   try {
-    const result = await axios.post(`${baseUrl}/heartrate`, {
+    const result = await axios.post(`${baseUrl}:5001/heartrate`, {
       signal: data,
     });
     let value = result.data.peaks_count;
@@ -110,7 +110,7 @@ async function analyzeHeartRate(data) {
 
 async function analyzeSPO2(data) {
   try {
-    const result = await axios.post(`${baseUrl}/oxygenlevel`, {
+    const result = await axios.post(`${baseUrl}:5003/oxygenlevel`, {
       data: data,
     });
 
@@ -123,7 +123,7 @@ async function analyzeSPO2(data) {
 
 async function analyzeTemperature(data) {
   try {
-    const result = await axios.post(`${baseUrl}/temperature`, {
+    const result = await axios.post(`${baseUrl}:5005/temperature`, {
       data: data,
     });
     // return parseFloat(result.data.temperature);
@@ -135,7 +135,7 @@ async function analyzeTemperature(data) {
 
 async function analyzeFinalStatus(data) {
   try {
-    const result = await axios.post(`${baseUrl}/status`, {
+    const result = await axios.post(`${baseUrl}:5004/status`, {
       data: data,
     });
     return {
