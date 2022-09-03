@@ -4,7 +4,7 @@ const User = require("../schemas/user");
 const Analyze = require("../schemas/analyze");
 const Location = require("../schemas/location");
 
-const baseUrl = process.env.BASE_URL;
+const baseUrl = "http://172.105.149.22";
 
 module.exports.calculateData = async (
   locationData,
@@ -87,11 +87,15 @@ async function analyzeCough(file) {
       contentType: "audio/wave",
     });
 
-    const result = await axios.post(`${baseUrl}/cough:5002`, formData, {
+    const result = await axios.post(`${baseUrl}:5002/cough`, formData, {
       headers: formData.getHeaders(),
     });
+
+    console.log(result);
+
     return { isCough: result.data.isCough, coughRate: result.data.cough_rate };
   } catch (error) {
+    console.log(error);
     return { isCough: 1, coughRate: 3.4 };
   }
 }
