@@ -1,8 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const flaggedLocationSchema = new Schema({
-  lat: Number,
-  long: Number,
+  locations: [{ lat: Number, lng: Number }],
   createdDate: {
     type: Date,
     default: new Date(),

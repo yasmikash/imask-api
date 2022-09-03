@@ -4,6 +4,7 @@ const {
   signUser,
   flagLocation,
   getProfile,
+  fetchFlaggedLocations,
 } = require("../controllers/admin");
 const { authenticateUser } = require("../middlewares/auth");
 
@@ -41,8 +42,21 @@ router.post(
   authenticateUser("admin"),
   async (req, res, next) => {
     try {
-      const flaggedLocation = await flagLocation(req.body, req.currentUser);
-      res.json(flaggedLocation);
+      const flaggedLocations = await flagLocation(req.body, req.currentUser);
+      res.json(flaggedLocations);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.get(
+  "/flag-location",
+  authenticateUser("admin"),
+  async (req, res, next) => {
+    try {
+      const flaggedLocations = await fetchFlaggedLocations();
+      res.json(flaggedLocations);
     } catch (error) {
       next(error);
     }

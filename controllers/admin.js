@@ -51,7 +51,7 @@ module.exports.signUser = async (data) => {
 
   const validPassword = await new Promise((res, rej) => {
     bcrypt.compare(data.password, foundUser.password, (err, result) => {
-      if (!result || err) rej(new Error("Invalid  admin user"));
+      if (!result || err) rej(new Error("Invalid admin user"));
       res(result);
     });
   });
@@ -68,13 +68,13 @@ module.exports.signUser = async (data) => {
 };
 
 module.exports.flagLocation = async (data, user) => {
-  const flaggedLocation = new FlaggedLocation({
-    lat: data.lat,
-    long: data.long,
-    createdBy: user.id,
-  });
+  await FlaggedLocation.updateOne({ locations: data, createdBy: user.id });
 
-  const createdFlaggedLocations = await flaggedLocation.save();
+  const flaggedLocations = await FlaggedLocation.find();
+  return flaggedLocations;
+};
 
-  return createdFlaggedLocations;
+module.exports.fetchFlaggedLocations = async () => {
+  const flaggedLocations = await FlaggedLocation.find();
+  return flaggedLocations;
 };
