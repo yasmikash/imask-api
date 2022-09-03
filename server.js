@@ -7,6 +7,7 @@ const cors = require("cors");
 
 const userRoute = require("./routes/user");
 const adminRoute = require("./routes/admin");
+const locationRoute = require("./routes/location");
 const analyzeRoute = require("./routes/anaylize");
 const historyRoute = require("./routes/history");
 const { authenticateUser } = require("./middlewares/auth");
@@ -21,6 +22,8 @@ app.use(fileUpload({ limits: 1024 * 1024 * 50 }));
 app.use("/users", userRoute);
 
 app.use("/admins", adminRoute);
+
+app.use("/locations", locationRoute);
 
 app.use("/analyze", authenticateUser("user"), analyzeRoute);
 
