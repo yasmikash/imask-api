@@ -13,7 +13,7 @@ const analyzeSchema = new Schema({
   temperature: Number,
   covidStatus: Number,
   covidStatusProbability: Number,
-  createdDate: {
+  date: {
     type: Date,
     default: new Date(),
   },

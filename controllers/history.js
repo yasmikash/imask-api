@@ -10,33 +10,37 @@ module.exports.fetchAll = async (user) => {
 };
 
 module.exports.fetchRespiratory = async (user) => {
-  const result = await Analyze.find({ user: user.id }).select("date bpm -_id");
+  const result = await Analyze.find({ user: user.id })
+    .select("date bpm -_id")
+    .sort({ date: "desc" });
   return result;
 };
 
 module.exports.fetchHeartRate = async (user) => {
-  const result = await Analyze.find({ user: user.id }).select(
-    "date heartRate -_id"
-  );
+  const result = await Analyze.find({ user: user.id })
+    .select("date heartRate -_id")
+    .sort({ date: "desc" });
   return result;
 };
 
 module.exports.fetchCough = async (user) => {
-  const result = await Analyze.find({ user: user.id }).select(
-    "date coughRate isCough -_id"
-  );
+  const result = await Analyze.find({ user: user.id })
+    .select("date coughRate isCough -_id")
+    .sort({ date: "desc" });
   return result;
 };
 
 module.exports.fetchSpo2 = async (user) => {
-  const result = await Analyze.find({ user: user.id }).select("date spo2 -_id");
+  const result = await Analyze.find({ user: user.id })
+    .select("date spo2 -_id")
+    .sort({ date: "desc" });
   return result;
 };
 
 module.exports.fetchTemperature = async (user) => {
-  const result = await Analyze.find({ user: user.id }).select(
-    "date temperature -_id"
-  );
+  const result = await Analyze.find({ user: user.id })
+    .select("date temperature -_id")
+    .sort({ date: "desc" });
   return result;
 };
 
